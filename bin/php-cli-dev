@@ -1,8 +1,6 @@
 #!/usr/bin/php
 <?php
 
-require __DIR__ . '/../autoload.php';
-
 final class PHP_CLI_Dev extends aubreypwd\PHP_CLI\CLI {
 
 	protected function setup( Options $options ) {
