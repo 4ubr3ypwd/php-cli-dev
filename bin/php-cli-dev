@@ -1,9 +1,11 @@
-#!/usr/bin/php
+#!/usr/bin/env php
 <?php
 
 namespace aubreypwd\PHP_CLI_Dev;
 
-final class Command extends aubreypwd\PHP_CLI\CLI {
+require_once __DIR__ . '/../autoload.php';
+
+final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 	protected function setup( Options $options ) {
 
