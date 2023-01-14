@@ -1,7 +1,9 @@
 #!/usr/bin/php
 <?php
 
-final class PHP_CLI_Dev extends aubreypwd\PHP_CLI\CLI {
+namespace aubreypwd\PHP_CLI_Dev;
+
+final class Command extends aubreypwd\PHP_CLI\CLI {
 
 	protected function setup( Options $options ) {
 
