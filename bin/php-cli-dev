@@ -1,0 +1,29 @@
+#!/usr/bin/php
+<?php
+
+require __DIR__ . '/../autoload.php';
+
+final class PHP_CLI_Dev extends aubreypwd\PHP_CLI\CLI {
+
+	protected function setup( Options $options ) {
+
+		$options->setHelp( 'A very minimal example that does nothing but print a version' );
+		$options->registerOption( 'version', 'print version', 'v' );
+	}
+
+	protected function main( Options $options ) {
+
+		if ( $options->getOpt( 'version' ) ) {
+
+			$this->info( '1.0.0' );
+
+			return;
+		}
+
+		echo $options->help();
+	}
+}
+
+$cli = new PHP_CLI_Dev();
+
+$cli->run();
