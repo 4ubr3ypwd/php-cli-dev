@@ -12,7 +12,7 @@
             "dist": {
                 "type": "path",
                 "url": "/Users/aubreypwd/Repos/github.com/aubreypwd/php-cli",
-                "reference": "e32835cd95157b5495cbcc7514122c34bc18769f"
+                "reference": "126723cac5ed8effad6ce07e2fe84472f3260641"
             },
             "require": {
                 "splitbrain/php-cli": "^1.2"

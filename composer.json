@@ -5,7 +5,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "aubreypwd\\PHP_CLI\\": "src/"
+            "aubreypwd\\PHP_CLI_Dev\\": "src/"
         }
     },
     "authors": [
