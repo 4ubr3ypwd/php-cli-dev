@@ -3,11 +3,6 @@
     "description": "Development for aubreypwd/php-cli.",
     "type": "library",
     "license": "MIT",
-    "autoload": {
-        "psr-4": {
-            "aubreypwd\\PHP_CLI_Dev\\": "src/"
-        }
-    },
     "authors": [
         {
             "name": "Aubrey Portwood",
@@ -21,6 +16,9 @@
         "bin/php-cli-dev"
     ],
     "autoload": {
+        "psr-4": {
+            "aubreypwd\\PHP_CLI_Dev\\": "src/"
+        },
         "files": [
             "autoload.php"
         ]
