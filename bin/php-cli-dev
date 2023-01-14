@@ -7,13 +7,13 @@ require_once __DIR__ . '/../autoload.php';
 
 final class Command extends \aubreypwd\PHP_CLI\CLI {
 
-	protected function setup( Options $options ) {
+	protected function setup( \splitbrain\phpcli\Options $options ) {
 
 		$options->setHelp( 'A very minimal example that does nothing but print a version' );
 		$options->registerOption( 'version', 'print version', 'v' );
 	}
 
-	protected function main( Options $options ) {
+	protected function main( \splitbrain\phpcli\Options $options ) {
 
 		if ( $options->getOpt( 'version' ) ) {
 
