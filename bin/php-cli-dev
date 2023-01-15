@@ -16,7 +16,7 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		$this->info( $this->has_command( 'brew' ) ? 'brew installed' : 'brew not installed' );
 		$this->info( $this->has_command( 'asdfqwer01234' ) ? 'asdfqwer01234 installed' : 'asdfqwer01234 not installed' );
 
-		// get_php_version
+		// get_php_version()
 		$this->info( "The PHP version installed is: {$this->get_php_version()}" );
 	}
 
