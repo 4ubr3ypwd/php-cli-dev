@@ -3,35 +3,81 @@
 
 namespace aubreypwd\PHP_CLI_Dev;
 
+use \splitbrain\phpcli\Options;
+
 require_once __DIR__ . '/../autoload.php';
 
 final class Command extends \aubreypwd\PHP_CLI\CLI {
 
-	protected function setup( \splitbrain\phpcli\Options $options ) {
+	protected function setup( Options $options ) : void {
 
-		$options->setHelp( 'Command description.' );
-		$options->registerOption( 'version', 'Print version.', 'v' );
+		$this->set_help( $options, 'Development testbed for aubreypwd/php-cli.' );
 
-		// has_command()
-		$this->info( $this->has_command( 'brew' ) ? 'brew is installed' : 'brew not installed' );
-		$this->info( $this->has_command( 'asdfqwer01234' ) ? 'asdfqwer01234 is installed' : 'asdfqwer01234 not installed' );
+		$this->explain_option( $options, 'version', 'Print version.', 'v' );
+		$this->explain_argument( $options, 'all', 'Test the all methods.', false );
 
-		// get_php_version()
-		$this->info( "The PHP version installed is: {$this->get_php_version()}" );
-
-		$this->info( "The current dirname is: {$this->get_working_dirname()}" );
+		$this->invalidate_unexplained_options( $options );
 	}
 
-	protected function main( \splitbrain\phpcli\Options $options ) {
+	protected function main( Options $options ) : void {
 
-		if ( $options->getOpt( 'version' ) ) {
-
-			$this->info( '1.0.0' );
-
+		if ( in_array( true, [
+			$this->method_tests( $options ),
+			$this->version( $options ),
+		], true ) ) {
 			return;
 		}
 
-		echo $options->help();
+		$this->show_help( $options );
+	}
+
+	private function version( Options $options ) : bool {
+
+		if ( ! $this->get_opt( $options, 'version' ) ) {
+			return false;
+		}
+
+		$this->info( '1.0.0' );
+
+		return true;
+	}
+
+	private function method_tests( Options $options ) : bool {
+
+		return in_array( true, [
+
+			$this->test_method( $options, 'has_command', function() {
+				$this->info( $this->has_command( 'brew' ) ? 'brew is installed' : 'brew not installed' ); $this->info( $this->has_command( 'asdfqwer01234' ) ? 'asdfqwer01234 is installed' : 'asdfqwer01234 not installed' );
+			} ),
+
+			$this->test_method( $options, 'get_php_version', function() {
+				$this->info( "The PHP version installed is: {$this->get_php_version()}" );
+			} ),
+
+			$this->test_method( $options, 'get_working_dirname', function() {
+				$this->info( "The current directory name is: {$this->get_working_dirname()}" );
+			} ),
+
+			$this->test_method( $options, 'get_working_dir', function() {
+				$this->info( "The current directory path is: {$this->get_working_dir()}" );
+			} ),
+		], true );
+	}
+
+	private function test_method( Options $options, string $arg, $cb ) {
+
+		$this->explain_argument( $options, $arg, "Test the {$arg}() method.", false );
+
+		if (
+			$arg !== $this->get_arg( $options, 0 ) &&
+			'all' !== $this->get_arg( $options, 0 )
+		) {
+			return false;
+		}
+
+		$cb();
+
+		return true;
 	}
 }
 
