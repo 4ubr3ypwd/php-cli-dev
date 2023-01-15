@@ -21,6 +21,10 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 	protected function main( Options $options ) : void {
 
+		$this->lb();
+		$this->log( 'Welcome!' );
+		$this->lb();
+
 		if ( in_array( true, [
 			$this->method_tests( $options ),
 			$this->version( $options ),
