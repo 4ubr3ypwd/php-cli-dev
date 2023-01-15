@@ -11,21 +11,22 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 	protected function setup( Options $options ) : void {
 
-		$this->set_help( $options, 'Development testbed for aubreypwd/php-cli.' );
+		$this->set_desc( $options, 'Development testbed for aubreypwd/php-cli.' );
 
 		$this->explain_option( $options, 'version', 'Print version.', 'v' );
-		$this->explain_argument( $options, 'all', 'Test the all methods.', false );
+		$this->explain_option( $options, 'do', 'This should require an argument.', 'd', 'all' );
 
-		$this->invalidate_unexplained_options( $options );
+		$this->explain_argument( $options, 'all', 'Test the all methods.', false );
 	}
 
 	protected function main( Options $options ) : void {
 
 		$this->lb();
-		$this->log( 'Welcome!' );
+		$this->log( '<yellow>Welcome</yellow> <green>to</green> <red>php-cli-dev</red>.' );
 		$this->lb();
 
 		if ( in_array( true, [
+			$this->do_all( $options ),
 			$this->method_tests( $options ),
 			$this->version( $options ),
 		], true ) ) {
@@ -33,6 +34,19 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		}
 
 		$this->show_help( $options );
+	}
+
+	private function do_all( Options $options ) : bool {
+
+		$opt_value = $this->get_opt( $options, 'do' );
+
+		if ( empty( $opt_value ) ) {
+			return false;
+		}
+
+		$this->info( "--do is set to: {$opt_value}" );
+
+		return true;
 	}
 
 	private function version( Options $options ) : bool {
@@ -73,8 +87,9 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		$this->explain_argument( $options, $arg, "Test the {$arg}() method.", false );
 
 		if (
-			$arg !== $this->get_arg( $options, 0 ) &&
-			'all' !== $this->get_arg( $options, 0 )
+			! $this->arg_present( $options, $arg ) && // By name
+			'all' !== $this->get_arg( $options, 0 ) && // all
+			'all' !== $this->get_opt( $options, 'do' ) // --do all
 		) {
 			return false;
 		}
@@ -87,4 +102,11 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 $cli = new \aubreypwd\PHP_CLI_Dev\Command();
 
-$cli->run();
+try {
+
+	$cli->run();
+
+} catch ( \Exception $e ) {
+
+	$cli->log( 'error', "{$e->getMessage()}\n" );
+}
