@@ -13,11 +13,13 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		$options->registerOption( 'version', 'Print version.', 'v' );
 
 		// has_command()
-		$this->info( $this->has_command( 'brew' ) ? 'brew installed' : 'brew not installed' );
-		$this->info( $this->has_command( 'asdfqwer01234' ) ? 'asdfqwer01234 installed' : 'asdfqwer01234 not installed' );
+		$this->info( $this->has_command( 'brew' ) ? 'brew is installed' : 'brew not installed' );
+		$this->info( $this->has_command( 'asdfqwer01234' ) ? 'asdfqwer01234 is installed' : 'asdfqwer01234 not installed' );
 
 		// get_php_version()
 		$this->info( "The PHP version installed is: {$this->get_php_version()}" );
+
+		$this->info( "The current dirname is: {$this->get_working_dirname()}" );
 	}
 
 	protected function main( \splitbrain\phpcli\Options $options ) {
