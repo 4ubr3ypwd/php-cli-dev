@@ -89,15 +89,15 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 			$this->test_method( $options, 'rid', function() use ( $options ) {
 
-				$dir = $this->get_opt( $options, 'rid-dir' );
-				$cmd = $this->get_opt( $options, 'rid-cmd' );
+				$rid_dir = $this->get_opt( $options, 'rid-dir' );
+				$rid_cmd = $this->get_opt( $options, 'rid-cmd' );
 
-				$where = empty( $dir ) ? sys_get_temp_dir() : $dir;
-				$command = empty( $cmd ) ? 'ls -1 | wc -l' : $cmd;
+				$dir     = empty( $rid_dir ) ? sys_get_temp_dir() : $rid_dir;
+				$command = empty( $rid_cmd ) ? 'ls -1 | wc -l' : $rid_cmd;
 
-				$this->log( "<li>We'll run <red>{$command}</red> in <blue>{$where}</blue>:</li>" );
+				$this->log( "<li>We ran <red>{$command}</red> in <blue>{$dir}</blue>:</li>" );
 
-				$rid = $this->rid( $command, $where );
+				$rid = $this->rid( $command, $dir );
 
 				$rid_out = $this->exec_get_output(
 					$rid,
@@ -106,7 +106,7 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 				if ( empty( $rid_out ) ) {
 
-					$this->log( "<br><red>Failed to run <yellow>{$command}</yellow> in <white>{$where}</white>...</red>" );
+					$this->log( "<br><red>Failed to run <yellow>{$command}</yellow> in <white>{$dir}</white>...</red>" );
 
 					return;
 				}
@@ -129,6 +129,8 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		) {
 			return false;
 		}
+
+		$this->log( "<br>Testing method <purple>{$arg}()</purple>..." );
 
 		$cb();
 
