@@ -7,11 +7,11 @@ use \splitbrain\phpcli\Options;
 
 require_once __DIR__ . '/../autoload.php';
 
-final class Command extends \aubreypwd\PHP_CLI\CLI {
+final class Command extends \aubreypwd\PHP_CLI\Command {
 
 	protected function setup( Options $options ) : void {
 
-		$this->set_desc( $options, 'Development testbed for aubreypwd/php-cli.' );
+		$this->set_desc( $options, 'Development testbed for aubreypwd/php-cli' );
 
 		$this->explain_option( $options, 'version', 'Print version.', 'v' );
 		$this->explain_option( $options, 'do', 'Set this to the method test name or all.', '', 'all|name' );
@@ -24,7 +24,7 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 
 	protected function main( Options $options ) : void {
 
-		$this->log( '<p><yellow>Welcome</yellow> <green>to</green> <red>php-cli-dev</red>.</p>' );
+		$this->log( '<p><yellow>Welcome</yellow> <green>to</green> <red>php-cli-dev</red></p>' );
 
 		if ( in_array( true, [
 			$this->do_all( $options ),
