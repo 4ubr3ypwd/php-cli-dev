@@ -68,23 +68,23 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 			$this->test_method( $options, 'has_command', function() {
 				$this->log( $this->has_command( 'brew' )
 					? '<li><green>brew</green> is installed</li>'
-					: '<li><red>brew</red> not installed</li>' );
+					: '<li><red>brew</red> is <red>not</red> installed</li>' );
 
 				$this->log( $this->has_command( 'asdfqwer01234' )
 					? '<li><green>asdfqwer01234</green> is installed</li>'
-					: '<li><red>asdfqwer01234</red> not installed</li>' );
+					: '<li><red>asdfqwer01234</red> is <red>not</red> installed</li>' );
 			} ),
 
 			$this->test_method( $options, 'get_php_version', function() {
-				$this->log( "<li>The PHP version installed is: <purple>{$this->get_php_version()}</purple></li>" );
+				$this->log( "<li>The <cyan>PHP</cyan> version installed is: <purple>{$this->get_php_version()}</purple></li>" );
 			} ),
 
 			$this->test_method( $options, 'get_working_dirname', function() {
-				$this->log( "<li>The current directory name is: <yellow>{$this->get_working_dirname()}</yellow></li>" );
+				$this->log( "<li>The <cyan>current directory name</cyan> is: <yellow>{$this->get_working_dirname()}</yellow></li>" );
 			} ),
 
 			$this->test_method( $options, 'get_working_dir', function() {
-				$this->log( "<li>The current directory path is: <yellow>{$this->get_working_dir()}</yellow></li>" );
+				$this->log( "<li>The <cyan>current directory path</cyan> is: <yellow>{$this->get_working_dir()}</yellow></li>" );
 			} ),
 
 			$this->test_method( $options, 'rid', function() use ( $options ) {
