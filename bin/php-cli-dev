@@ -14,16 +14,17 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		$this->set_desc( $options, 'Development testbed for aubreypwd/php-cli.' );
 
 		$this->explain_option( $options, 'version', 'Print version.', 'v' );
-		$this->explain_option( $options, 'do', 'This should require an argument.', 'd', 'all' );
+		$this->explain_option( $options, 'do', 'Set this to the method test name or all.', '', 'all|name' );
 
 		$this->explain_argument( $options, 'all', 'Test the all methods.', false );
+
+		$this->explain_option( $options, 'rid-dir', 'When testing the rid() method set this to a directory.', '', '/tmp' );
+		$this->explain_option( $options, 'rid-cmd', 'When testing the rid() method set this to a command to run in directory.', '', '/tmp' );
 	}
 
 	protected function main( Options $options ) : void {
 
-		$this->lb();
-		$this->log( '<yellow>Welcome</yellow> <green>to</green> <red>php-cli-dev</red>.' );
-		$this->lb();
+		$this->log( '<p><yellow>Welcome</yellow> <green>to</green> <red>php-cli-dev</red>.</p>' );
 
 		if ( in_array( true, [
 			$this->do_all( $options ),
@@ -44,7 +45,7 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 			return false;
 		}
 
-		$this->info( "--do is set to: {$opt_value}" );
+		$this->log( "<li><red>--do</red> is set to: <blue>{$opt_value}</blue></li>" );
 
 		return true;
 	}
@@ -65,19 +66,53 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		return in_array( true, [
 
 			$this->test_method( $options, 'has_command', function() {
-				$this->info( $this->has_command( 'brew' ) ? 'brew is installed' : 'brew not installed' ); $this->info( $this->has_command( 'asdfqwer01234' ) ? 'asdfqwer01234 is installed' : 'asdfqwer01234 not installed' );
+				$this->log( $this->has_command( 'brew' )
+					? '<li><green>brew</green> is installed</li>'
+					: '<li><red>brew</red> not installed</li>' );
+
+				$this->log( $this->has_command( 'asdfqwer01234' )
+					? '<li><green>asdfqwer01234</green> is installed</li>'
+					: '<li><red>asdfqwer01234</red> not installed</li>' );
 			} ),
 
 			$this->test_method( $options, 'get_php_version', function() {
-				$this->info( "The PHP version installed is: {$this->get_php_version()}" );
+				$this->log( "<li>The PHP version installed is: <purple>{$this->get_php_version()}</purple></li>" );
 			} ),
 
 			$this->test_method( $options, 'get_working_dirname', function() {
-				$this->info( "The current directory name is: {$this->get_working_dirname()}" );
+				$this->log( "<li>The current directory name is: <yellow>{$this->get_working_dirname()}</yellow></li>" );
 			} ),
 
 			$this->test_method( $options, 'get_working_dir', function() {
-				$this->info( "The current directory path is: {$this->get_working_dir()}" );
+				$this->log( "<li>The current directory path is: <yellow>{$this->get_working_dir()}</yellow></li>" );
+			} ),
+
+			$this->test_method( $options, 'rid', function() use ( $options ) {
+
+				$dir = $this->get_opt( $options, 'rid-dir' );
+				$cmd = $this->get_opt( $options, 'rid-cmd' );
+
+				$where = empty( $dir ) ? sys_get_temp_dir() : $dir;
+				$command = empty( $cmd ) ? 'ls -1 | wc -l' : $cmd;
+
+				$this->log( "<li>We'll run <red>{$command}</red> in <blue>{$where}</blue>:</li>" );
+
+				$rid = $this->rid( $command, $where );
+
+				$rid_out = $this->exec_get_output(
+					$rid,
+					'string'
+				);
+
+				if ( empty( $rid_out ) ) {
+
+					$this->log( "<br><red>Failed to run <yellow>{$command}</yellow> in <white>{$where}</white>...</red>" );
+
+					return;
+				}
+
+				$this->log( "<br><green>{$rid_out}</green>" );
+
 			} ),
 		], true );
 	}
@@ -89,7 +124,8 @@ final class Command extends \aubreypwd\PHP_CLI\CLI {
 		if (
 			! $this->arg_present( $options, $arg ) && // By name
 			'all' !== $this->get_arg( $options, 0 ) && // all
-			'all' !== $this->get_opt( $options, 'do' ) // --do all
+			'all' !== $this->get_opt( $options, 'do' ) && // --do all
+			$arg !== $this->get_opt( $options, 'do' ) // --do <name>
 		) {
 			return false;
 		}
